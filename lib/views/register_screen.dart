@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_project_flutter/views/login_screen.dart';
 import 'home_screen.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -10,13 +11,19 @@ class RegisterScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Registrar'),
         backgroundColor: const Color.fromARGB(255, 63, 180, 67),
+
+        //Botão de retornar para tela de login
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(HomeScreen() as BuildContext);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginScreen()),
+            );
           },
         ),
       ),
+      
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
