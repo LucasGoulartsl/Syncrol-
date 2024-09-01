@@ -10,7 +10,7 @@ class RegisterScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Registrar'),
-        backgroundColor: const Color.fromARGB(255, 63, 180, 67),
+        backgroundColor: Colors.blue.shade200,
 
         //Botão de retornar para tela de login
         leading: IconButton(

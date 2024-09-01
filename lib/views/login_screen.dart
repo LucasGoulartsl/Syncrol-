@@ -11,9 +11,9 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 63, 180, 67),
+        backgroundColor: Colors.blue.shade200,
       ),
-      backgroundColor: const Color.fromARGB(255, 63, 180, 67),
+      backgroundColor: Colors.blue.shade200,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

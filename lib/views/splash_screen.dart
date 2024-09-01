@@ -19,7 +19,7 @@ class SplashScreen extends StatelessWidget {
       ),
       logo: getShoppingCartLogo(
           width: 200, height: 200), // Usa a função para obter a imagem
-      backgroundColor: const Color.fromARGB(255, 63, 180, 67),
+      backgroundColor: Colors.blue.shade200,
       showLoader: true,
       durationInSeconds: 3,
       navigator: const LoginScreen(),
