@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:my_project_flutter/views/login_screen.dart';
 import 'home_screen.dart';
+import '../utils/input_decoration.dart' as input_utils;
+import '../utils/button_styles.dart' as button_utils;
+import '../utils/text.styles.dart' as text_styles;
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -12,7 +15,7 @@ class RegisterScreen extends StatelessWidget {
         title: const Text('Registrar'),
         backgroundColor: Colors.blue.shade200,
 
-        //Botão de retornar para tela de login
+        // Botão de retornar para a tela de login
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -23,7 +26,6 @@ class RegisterScreen extends StatelessWidget {
           },
         ),
       ),
-      
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -31,56 +33,36 @@ class RegisterScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               // Campo de entrada para nome de usuário
-              const Padding(
-                padding: EdgeInsets.all(8.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Nome de Usuário',
-                    border: OutlineInputBorder(),
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
+                  decoration: input_utils.inputDecoration('Nome de Usuário'),
                 ),
               ),
 
               // Campo de entrada para e-mail
-              const Padding(
-                padding: EdgeInsets.all(8.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'E-mail',
-                    border: OutlineInputBorder(),
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
+                  decoration: input_utils.inputDecoration('E-mail'),
                   keyboardType: TextInputType.emailAddress,
                 ),
               ),
 
               // Campo de entrada para senha
-              const Padding(
-                padding: EdgeInsets.all(8.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Senha',
-                    border: OutlineInputBorder(),
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
+                  decoration: input_utils.inputDecoration('Senha'),
                   obscureText: true,
                 ),
               ),
 
               // Campo de entrada para confirmar senha
-              const Padding(
-                padding: EdgeInsets.all(8.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Confirmar Senha',
-                    border: OutlineInputBorder(),
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
+                  decoration: input_utils.inputDecoration('Confirmar Senha'),
                   obscureText: true,
                 ),
               ),
@@ -90,6 +72,7 @@ class RegisterScreen extends StatelessWidget {
 
               // Botão 'Registrar'
               ElevatedButton(
+                style: button_utils.elevatedButtonStyle(Colors.green.shade600),
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,

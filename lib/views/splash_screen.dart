@@ -1,28 +1,53 @@
 import 'package:flutter/material.dart';
-import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:my_project_flutter/views/login_screen.dart';
-import '../logo_helper.dart'; // Adicione esta linha para importar a função getShoppingCartLogo
+import 'package:my_project_flutter/utils/text.styles.dart';
+import '../utils/logo_helper.dart'; // Importa a função getShoppingCartLogo
 
 // Tela Apresentacao
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Navega para a tela de login após 3 segundos
+    Future.delayed(const Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return EasySplashScreen(
-      title: const Text(
-        'Syncrol+',
-        style: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.normal,
+    return Scaffold(
+      backgroundColor: Colors.blue.shade200, // Cor de fundo
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            // Logo
+            getShoppingCartLogo(
+              width: 150, // Ajuste o tamanho da logo conforme necessário
+              height: 150, // Ajuste o tamanho da logo conforme necessário
+            ),
+            const SizedBox(height: 20), // Espaço entre a logo e o texto
+            // Texto
+            Text(
+              'Syncrol+',
+              style: syncrolTextStyle().copyWith(
+                fontSize: 30, // Ajuste o tamanho da fonte conforme necessário
+              ),
+            ),
+          ],
         ),
       ),
-      logo: getShoppingCartLogo(
-          width: 200, height: 200), // Usa a função para obter a imagem
-      backgroundColor: Colors.blue.shade200,
-      showLoader: true,
-      durationInSeconds: 3,
-      navigator: const LoginScreen(),
     );
   }
 }

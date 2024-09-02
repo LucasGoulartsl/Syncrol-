@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:my_project_flutter/views/register_screen.dart';
+import 'package:my_project_flutter/utils/text.styles.dart';
 import 'home_screen.dart';
-import '../logo_helper.dart'; // Adicione esta linha para importar a função getShoppingCartLogo
+import '../utils/logo_helper.dart'; // Importa a função getShoppingCartLogo
 
-// Tela Login
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
@@ -27,41 +27,27 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 20),
 
               // Texto 'Syncrol+'
-              const Text(
+              Text(
                 'Syncrol+',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.normal,
-                  color: Colors.white, // Define a cor do texto
-                ),
+                style: syncrolTextStyle(),
               ),
 
               // Espaço entre o texto e os campos de entrada
               const SizedBox(height: 20),
 
               // Campo de entrada para usuário
-              const Padding(
-                padding: EdgeInsets.all(8.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Usuário',
-                    border: OutlineInputBorder(),
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
+                  decoration: inputDecoration('Usuário'),
                 ),
               ),
 
               // Campo de entrada para senha
-              const Padding(
-                padding: EdgeInsets.all(8.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Senha',
-                    border: OutlineInputBorder(),
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
+                  decoration: inputDecoration('Senha'),
                   obscureText: true,
                 ),
               ),
@@ -71,6 +57,7 @@ class LoginScreen extends StatelessWidget {
 
               // Botão 'Entrar'
               ElevatedButton(
+                style: elevatedButtonStyle(Colors.blue.shade800),
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
@@ -85,6 +72,7 @@ class LoginScreen extends StatelessWidget {
 
               // Botão 'Registrar'
               ElevatedButton(
+                style: elevatedButtonStyle(Colors.green.shade600),
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
