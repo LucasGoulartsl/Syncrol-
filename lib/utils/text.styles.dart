@@ -17,7 +17,8 @@ InputDecoration inputDecoration(String hintText) {
     hintStyle: TextStyle(
       color: Colors.grey.shade600, // Cor do texto de dica
     ),
-    contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15), // Ajusta o padding interno
+    contentPadding: const EdgeInsets.symmetric(
+        horizontal: 20, vertical: 15), // Ajusta o padding interno
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(30),
     ),
