@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_project_flutter/components/app_bar.dart'; // Importa o widget AppBar personalizado 
 import 'package:my_project_flutter/components/bottons_low.dart';// Importa o widget BottomAppBar personalizado
-import 'package:my_project_flutter/views/login_screen.dart';
+import 'package:my_project_flutter/views/login_view.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

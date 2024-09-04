@@ -14,8 +14,8 @@ TextStyle syncrolTextStyle() {
 InputDecoration inputDecoration(String hintText) {
   return InputDecoration(
     hintText: hintText,
-    hintStyle: TextStyle(
-      color: Colors.grey.shade600, // Cor do texto de dica
+    hintStyle: const TextStyle(
+      color: Color.fromARGB(255, 0, 0, 0), // Cor do texto de dica
     ),
     contentPadding: const EdgeInsets.symmetric(
         horizontal: 20, vertical: 15), // Ajusta o padding interno

@@ -1,7 +1,7 @@
 // lib/utils/app_bar.dart
 
 import 'package:flutter/material.dart';
-import 'package:my_project_flutter/views/login_screen.dart'; // Ajuste o caminho conforme necessário
+import 'package:my_project_flutter/views/login_view.dart'; // Ajuste o caminho conforme necessário
 
 AppBar customAppBar({
   required BuildContext context,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_project_flutter/views/login_screen.dart';
+import 'package:my_project_flutter/views/login_view.dart';
 import 'package:my_project_flutter/utils/text.styles.dart';
 import '../utils/logo_helper.dart'; // Importa a função getShoppingCartLogo
 
