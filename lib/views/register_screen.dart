@@ -72,7 +72,7 @@ class RegisterScreen extends StatelessWidget {
 
               // Botão 'Registrar'
               ElevatedButton(
-                style: button_utils.elevatedButtonStyle(Colors.green.shade600),
+                style: button_utils.elevatedButtonStyle(Colors.blue.shade800),
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,

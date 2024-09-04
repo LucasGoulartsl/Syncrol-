@@ -40,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
             const SizedBox(height: 20), // Espaço entre a logo e o texto
             // Texto
             Text(
-              'Syncrol+',
+              'SYNCROL+',
               style: syncrolTextStyle().copyWith(
                 fontSize: 30, // Ajuste o tamanho da fonte conforme necessário
               ),

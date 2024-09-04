@@ -28,7 +28,7 @@ class LoginScreen extends StatelessWidget {
 
               // Texto 'Syncrol+'
               Text(
-                'Syncrol+',
+                'SYNCROL+',
                 style: syncrolTextStyle(),
               ),
 
@@ -72,7 +72,7 @@ class LoginScreen extends StatelessWidget {
 
               // Botão 'Registrar'
               ElevatedButton(
-                style: elevatedButtonStyle(Colors.green.shade600),
+                style: elevatedButtonStyle(Colors.blue.shade800),
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,

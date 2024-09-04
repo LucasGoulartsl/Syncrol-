@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_project_flutter/utils/app_bar.dart'; // Importa o widget AppBar personalizado 
-import 'package:my_project_flutter/utils/bottons_low.dart';// Importa o widget BottomAppBar personalizado
+import 'package:my_project_flutter/components/app_bar.dart'; // Importa o widget AppBar personalizado 
+import 'package:my_project_flutter/components/bottons_low.dart';// Importa o widget BottomAppBar personalizado
 import 'package:my_project_flutter/views/login_screen.dart';
 
 class HomeScreen extends StatelessWidget {

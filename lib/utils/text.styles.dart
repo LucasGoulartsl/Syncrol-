@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 TextStyle syncrolTextStyle() {
-  return GoogleFonts.notoSansDisplay(
-    fontSize: 24,
-    fontWeight: FontWeight.normal,
-    color: Colors.white,
+  return const TextStyle(
+    fontSize: 30,
+    fontWeight: FontWeight.bold, // Define o texto em negrito
+    color: Color.fromARGB(255, 0, 0, 0),
   );
 }
 
