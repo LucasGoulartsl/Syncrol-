@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_project_flutter/components/app_bar.dart'; // Importa o widget AppBar personalizado 
-import 'package:my_project_flutter/components/bottons_low.dart';// Importa o widget BottomAppBar personalizado
+import 'package:my_project_flutter/components/app_bar.dart'; // Importa o widget AppBar personalizado
+import 'package:my_project_flutter/components/bottons_low.dart'; // Importa o widget BottomAppBar personalizado
+import 'package:my_project_flutter/views/add_product_view.dart';
 import 'package:my_project_flutter/views/login_view.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -34,12 +35,19 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: customFloatingActionButton(() {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => AddProductPage()),
+        );
         // Ação para o botão flutuante
       }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: customBottomAppBar(
         onFloatingActionButtonPressed: () {
-          // Ação para o botão flutuante
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => AddProductPage()),
+          );
         },
         onHomePressed: () {
           // Ação para o ícone de home

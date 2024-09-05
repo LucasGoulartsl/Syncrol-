@@ -46,7 +46,7 @@ Widget customBottomAppBar({
 /// Cria um widget `FloatingActionButton` personalizado com ação configurável.
 Widget customFloatingActionButton(VoidCallback onPressed) {
   return FloatingActionButton(
-    onPressed: onPressed, // Ícone do FloatingActionButton
+    onPressed: (onPressed), // Ícone do FloatingActionButton
     backgroundColor: Colors.blue.shade200, // Cor de fundo do botão
     shape: const CircleBorder(), // Forma circular garantida
     elevation: 6, // Ação ao clicar no FloatingActionButton
