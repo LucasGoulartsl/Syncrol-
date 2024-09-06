@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_project_flutter/components/bottons_low.dart';
+import 'package:my_project_flutter/views/home_view.dart';
 
 class AddProductPage extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
@@ -182,7 +183,10 @@ class AddProductPage extends StatelessWidget {
           );
         },
         onHomePressed: () {
-          // Ação para o ícone de home
+           Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()), // Ação para o ícone para retornar a home
+            ); 
         },
         onStoragePressed: () {
           // Ação para o ícone de estoque

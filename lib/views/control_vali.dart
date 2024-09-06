@@ -1,49 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:my_project_flutter/components/app_bar.dart'; // Importa o widget AppBar personalizado
-import 'package:my_project_flutter/components/bottons_low.dart'; // Importa o widget BottomAppBar personalizado
+import 'package:my_project_flutter/components/app_bar.dart';
+import 'package:my_project_flutter/components/bottons_low.dart';
 import 'package:my_project_flutter/views/add_product_view.dart';
-import 'package:my_project_flutter/views/control_vali.dart';
-import 'package:my_project_flutter/views/login_view.dart';
+import 'package:my_project_flutter/views/home_view.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
+class ControlVali extends StatelessWidget {
+  const ControlVali({super.key});
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppBar(context: context),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            _buildOptionCard(
-              icon: Icons.check_box,
-              text: 'Controle de validade',
-              onTap: () {
-                Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const ControlVali()), // Ação ao clicar para direcionar a pagina de crontrole de validade
-            ); 
-              },
-            ),
-            const SizedBox(height: 20),
-            _buildOptionCard(
-              icon: Icons.inventory,
-              text: 'Controle de estoque',
-              onTap: () {
-                // Ação ao clicar
-              },
-            ),
-          ],
-        ),
+      body: Column(
+        children: [
+          const SizedBox(height: 20),
+          _buildOptionCard(
+            icon: Icons.add_photo_alternate_outlined,
+            text: 'Nome do produto',
+            onTap: () {
+              // Adicione a ação do onTap aqui
+            },
+          ),
+        ],
       ),
       floatingActionButton: customFloatingActionButton(() {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => AddProductPage()),
         );
-        // Ação para o botão flutuante
       }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: customBottomAppBar(
@@ -54,7 +38,10 @@ class HomeScreen extends StatelessWidget {
           );
         },
         onHomePressed: () {
-          // Ação para o ícone de home
+         Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()), // Ação para o ícone para retornar a home
+            );  
         },
         onStoragePressed: () {
           // Ação para o ícone de estoque
@@ -78,11 +65,9 @@ class HomeScreen extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       elevation: 4,
       child: ListTile(
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
         leading: Icon(icon, size: 40),
         title: Text(text, style: const TextStyle(fontSize: 18)),
-        trailing: const Icon(Icons.arrow_forward),
         onTap: onTap,
       ),
     );
