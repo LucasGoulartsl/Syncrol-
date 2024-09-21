@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_project_flutter/components/bottons_low.dart';
+import 'package:my_project_flutter/views/control_validate_view.dart';
 import 'package:my_project_flutter/views/home_view.dart';
 
 class AddProductPage extends StatelessWidget {
@@ -141,6 +142,7 @@ class AddProductPage extends StatelessWidget {
 
               // Botão de Adicionar
               FloatingActionButton(
+                backgroundColor: Colors.blue.shade200,
                 onPressed: () {
                   // Aqui adicionaremos a lógica de salvar o produto
                 },
@@ -183,13 +185,20 @@ class AddProductPage extends StatelessWidget {
           );
         },
         onHomePressed: () {
-           Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const HomeScreen()), // Ação para o ícone para retornar a home
-            ); 
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    const HomeScreen()), // Ação para o ícone para retornar a home
+          );
         },
         onStoragePressed: () {
-          // Ação para o ícone de estoque
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    const ControlVali()), // Ação para o ícone para retornar a home
+          );
         },
         onUserPressed: () {
           // Ação para o ícone de usuário

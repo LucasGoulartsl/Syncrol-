@@ -1,7 +1,6 @@
-// lib/utils/app_bar.dart
-
 import 'package:flutter/material.dart';
 import 'package:my_project_flutter/views/login_view.dart'; // Ajuste o caminho conforme necessário
+import 'package:my_project_flutter/views/home_view.dart'; // Importar a view da home
 
 AppBar customAppBar({
   required BuildContext context,
@@ -19,9 +18,19 @@ AppBar customAppBar({
             },
           )
         : null,
-    title: Text(
-      title,
-      style: const TextStyle(fontWeight: FontWeight.bold),
+    title: GestureDetector(
+      onTap: () {
+        // Navegar para a home screen ao clicar no título
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const HomeScreen()), // Use a view da home
+        );
+      },
+      child: Text(
+        title,
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      ),
     ),
     centerTitle: true,
     actions: <Widget>[

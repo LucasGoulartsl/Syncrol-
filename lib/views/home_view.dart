@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:my_project_flutter/components/app_bar.dart'; // Importa o widget AppBar personalizado
 import 'package:my_project_flutter/components/bottons_low.dart'; // Importa o widget BottomAppBar personalizado
 import 'package:my_project_flutter/views/add_product_view.dart';
-import 'package:my_project_flutter/views/control_vali.dart';
+import 'package:my_project_flutter/views/control_stock_view.dart';
+import 'package:my_project_flutter/views/control_validate_view.dart';
 import 'package:my_project_flutter/views/login_view.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -22,9 +23,11 @@ class HomeScreen extends StatelessWidget {
               text: 'Controle de validade',
               onTap: () {
                 Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const ControlVali()), // Ação ao clicar para direcionar a pagina de crontrole de validade
-            ); 
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          const ControlVali()), // Ação ao clicar para direcionar a pagina de crontrole de validade
+                );
               },
             ),
             const SizedBox(height: 20),
@@ -32,7 +35,12 @@ class HomeScreen extends StatelessWidget {
               icon: Icons.inventory,
               text: 'Controle de estoque',
               onTap: () {
-                // Ação ao clicar
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          const ControlStock()), // Ação ao clicar para direcionar a pagina de crontrole de estoque
+                );
               },
             ),
           ],
@@ -57,7 +65,12 @@ class HomeScreen extends StatelessWidget {
           // Ação para o ícone de home
         },
         onStoragePressed: () {
-          // Ação para o ícone de estoque
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    const ControlStock()), // Ação para o ícone para estoque
+          );
         },
         onUserPressed: () {
           // Ação para o ícone de usuário
