@@ -17,19 +17,6 @@ class _ControlValiState extends State<ControlVali> {
   final ControlValidateController _controller = ControlValidateController();
   List<Map<String, dynamic>> _searchResults = [];
 
-  @override
-  void initState() {
-    super.initState();
-    _controller.connectToDb(); // Conecta ao MongoDB ao iniciar
-  }
-
-  @override
-  void dispose() {
-    _controller
-        .closeConnection(); // Fecha a conexão com o MongoDB ao fechar a view
-    super.dispose();
-  }
-
   void _search(String query) async {
     if (query.isNotEmpty) {
       final results = await _controller.searchProducts(query);
@@ -106,11 +93,11 @@ class _ControlValiState extends State<ControlVali> {
           },
           onStoragePressed: () {
             Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    const ControlStock()), // Ação para o ícone para estoque
-          );
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      const ControlStock()), // Ação para o ícone para estoque
+            );
           },
           onUserPressed: () {
             // Ação para o ícone de usuário

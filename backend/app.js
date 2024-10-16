@@ -1,5 +1,6 @@
 /* imports */
 require('dotenv').config()
+console.log("MONGODB_URI:", process.env.MONGODB_URI);
 const express = require('express')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
