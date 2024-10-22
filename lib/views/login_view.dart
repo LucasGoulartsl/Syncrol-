@@ -17,7 +17,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final storage = FlutterSecureStorage(); // Para armazenar o token
+  final storage = const FlutterSecureStorage(); // Para armazenar o token
 
   Future<void> login(BuildContext context) async {
     final url = Uri.parse('http://localhost:3000/auth/login');

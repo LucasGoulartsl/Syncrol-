@@ -32,7 +32,7 @@ class _ControlStockState extends State<ControlStock> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(context: context), // Reutiliza o AppBar customizado
+      appBar: customAppBar(context: context, showUserButton: true), // Reutiliza o AppBar customizado
       body: Column(
         children: [
           Padding(

@@ -1,3 +1,5 @@
+import 'dart:ui_web';
+
 import 'package:flutter/material.dart';
 import 'package:my_project_flutter/views/login_view.dart'; // Ajuste o caminho conforme necessário
 import 'package:my_project_flutter/views/home_view.dart'; // Importar a view da home
@@ -6,7 +8,7 @@ AppBar customAppBar({
   required BuildContext context,
   String title = 'SYNCROL+',
   bool showMenuButton = true,
-  bool showUserButton = true,
+  required bool showUserButton,
 }) {
   return AppBar(
     backgroundColor: Colors.blue.shade200,
@@ -14,7 +16,7 @@ AppBar customAppBar({
         ? IconButton(
             icon: const Icon(Icons.menu),
             onPressed: () {
-              // Ação para o menu
+              
             },
           )
         : null,
@@ -23,8 +25,7 @@ AppBar customAppBar({
         // Navegar para a home screen ao clicar no título
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-              builder: (context) => const HomeScreen()), // Use a view da home
+          MaterialPageRoute(builder: (context) => const HomeScreen()), // Use a view da home
         );
       },
       child: Text(
@@ -34,16 +35,34 @@ AppBar customAppBar({
     ),
     centerTitle: true,
     actions: <Widget>[
-      if (showUserButton)
-        IconButton(
+      if (showUserButton) // Corrigido aqui
+        PopupMenuButton<String>(
           icon: const Icon(Icons.person),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginScreen()),
-            );
+          onSelected: (value) {
+            if (value == 'sair') {
+              // Ação para sair
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginScreen()), // Navegar para a tela de login
+              );
+            } else if (value == 'fechar') {
+            
+            }
+          },
+          itemBuilder: (BuildContext context) {
+            return [
+              const PopupMenuItem<String>(
+                value: 'sair',
+                child: Text('Sair'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'fechar',
+                child: Text('Fechar'),
+              ),
+            ];
           },
         ),
+        
     ],
   );
 }

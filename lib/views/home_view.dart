@@ -12,7 +12,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(context: context),
+      appBar: customAppBar(context: context, showUserButton: true),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

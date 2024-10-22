@@ -34,7 +34,7 @@ class _ControlValiState extends State<ControlVali> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar:
-            customAppBar(context: context), // Reutiliza o AppBar customizado
+            customAppBar(context: context, showUserButton: true), // Reutiliza o AppBar customizado
         body: Column(
           children: [
             Padding(
