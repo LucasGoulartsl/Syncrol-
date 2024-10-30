@@ -1,37 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:my_project_flutter/views/home_view.dart'; // Importar sua tela inicial
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
 
   // Funções para redirecionamento às redes sociais
-  void _launchInstagram() async {
-    const url =
-        'https://www.instagram.com/sampa.019'; //link do Instagram
-    if (await canLaunch(url)) {
-      await launch(url);
+  Future<void> _launchInstagram() async {
+    final Uri url =
+        Uri.parse('https://www.instagram.com/sampa.019'); // link do Instagram
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
     } else {
       throw 'Não foi possível abrir $url';
     }
   }
 
-  void _launchEmail() async {
+  Future<void> _launchEmail() async {
     final Uri emailUri = Uri(
       scheme: 'mailto',
-      path: 'lukasoliveiraoficial55@gmail.com', //  email
+      path: 'suporte@email.com', // email
       query: 'subject=Contato pelo App', // Assunto do email
     );
-    if (await canLaunch(emailUri.toString())) {
-      await launch(emailUri.toString());
+    if (await canLaunchUrl(emailUri)) {
+      await launchUrl(emailUri);
     } else {
       throw 'Não foi possível enviar o email';
     }
   }
 
-  void _launchTwitter() async {
-    const url = 'https://twitter.com/seu_perfil'; //link do Twitter
-    if (await canLaunch(url)) {
-      await launch(url);
+  Future<void> _launchTwitter() async {
+    final Uri url = Uri.parse('https://twitter.com/'); // link do Twitter
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
     } else {
       throw 'Não foi possível abrir $url';
     }
@@ -43,6 +45,15 @@ class AboutPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Sobre'),
         backgroundColor: Colors.blue[300],
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+            );
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -83,7 +94,7 @@ class AboutPage extends StatelessWidget {
               children: [
                 IconButton(
                   icon: const Icon(
-                      Icons.camera_alt_outlined), // ícone do Instagram
+                      FontAwesomeIcons.instagram), // ícone do Instagram
                   onPressed: _launchInstagram,
                   iconSize: 40,
                 ),
@@ -95,36 +106,19 @@ class AboutPage extends StatelessWidget {
                 ),
                 const SizedBox(width: 20),
                 IconButton(
-                  icon: const Icon(Icons.message), // ícone do Twitter
+                  icon:
+                      const Icon(FontAwesomeIcons.twitter), // ícone do Twitter
                   onPressed: _launchTwitter,
                   iconSize: 40,
                 ),
               ],
             ),
             const Spacer(),
-            const Text('Version: 1.0.0'),
-            const Text('Suporte: suporte@seuemail.com'),
+            const Text('Versão: 1.0.0'),
+            const Text('Suporte: suporte@email.com'),
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(icon: const Icon(Icons.home), onPressed: () {}),
-            IconButton(icon: const Icon(Icons.storage), onPressed: () {}),
-            const SizedBox(width: 40), // Espaço para o FloatingActionButton
-            IconButton(icon: const Icon(Icons.verified_user), onPressed: () {}),
-            IconButton(icon: const Icon(Icons.assignment), onPressed: () {}),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }
