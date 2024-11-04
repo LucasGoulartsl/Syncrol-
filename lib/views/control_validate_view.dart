@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:my_project_flutter/components/app_bar.dart';
 import 'package:my_project_flutter/components/bottons_low.dart';
@@ -5,6 +6,8 @@ import 'package:my_project_flutter/controller/control_validate_controller.dart';
 import 'package:my_project_flutter/views/add_product_view.dart';
 import 'package:my_project_flutter/views/control_stock_view.dart';
 import 'package:my_project_flutter/views/home_view.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class ControlVali extends StatefulWidget {
   const ControlVali({super.key});
@@ -15,66 +18,69 @@ class ControlVali extends StatefulWidget {
 
 class _ControlValiState extends State<ControlVali> {
   final ControlValidateController _controller = ControlValidateController();
-  List<Map<String, dynamic>> _searchResults = [];
-  bool _isLoading = false;
+  List<dynamic> _searchResults = [];
+  List<dynamic> _allProducts = []; // Para armazenar todos os produtos
 
   void _search(String query) async {
     if (query.isNotEmpty) {
-      setState(() {
-        _isLoading = true;
-      });
-      final results = await _controller.searchProducts(query);
+      final results = _allProducts.where((product) {
+        return product['produto'].toLowerCase().contains(query.toLowerCase());
+      }).toList();
       setState(() {
         _searchResults = results;
-        _isLoading = false;
       });
     } else {
       setState(() {
-        _searchResults = [];
+        _searchResults = _allProducts; // Resetar para todos os produtos se a pesquisa estiver vazia
       });
     }
   }
 
+  void _fetchProducts() async {
+    try {
+      final results = await _controller.fetchExpiredAndNearExpiryProducts();
+      setState(() {
+        _allProducts = results; // Armazenar todos os produtos
+        _searchResults = results; // Inicializar a lista de pesquisa
+      });
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao carregar produtos: $e')),
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchProducts(); // Carrega os produtos na inicialização
+  }
+
+  List<dynamic> _sortProducts(List<dynamic> products) {
+    products.sort((a, b) {
+      DateTime expiryDateA = _parseDate(a['validade']);
+      DateTime expiryDateB = _parseDate(b['validade']);
+
+      // Primeiro, produtos vencidos
+      if (expiryDateA.isBefore(DateTime.now()) && expiryDateB.isAfter(DateTime.now())) {
+        return -1; // A vem antes de B
+      } else if (expiryDateA.isAfter(DateTime.now()) && expiryDateB.isBefore(DateTime.now())) {
+        return 1; // B vem antes de A
+      } else {
+        // Se ambos estão vencidos ou próximos a vencer, ordenar por data
+        return expiryDateA.compareTo(expiryDateB);
+      }
+    });
+    return products;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final sortedResults = _sortProducts(_searchResults); // Ordena os produtos para exibição
+
     return Scaffold(
-      appBar: customAppBar(
-        context: context,
-        showUserButton: true,
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Text(
-                'Menu',
-                style: TextStyle(color: Colors.white, fontSize: 24),
-              ),
-            ),
-            ListTile(
-              title: const Text('Home'),
-              onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
-                );
-              },
-            ),
-            ListTile(
-              title: const Text('Controle de Estoque'),
-              onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ControlStock()),
-                );
-              },
-            ),
-            // Adicione mais itens de menu conforme necessário
-          ],
-        ),
-      ),
+      appBar: customAppBar(context: context, showUserButton: true), // Reutiliza o AppBar customizado
       body: Column(
         children: [
           Padding(
@@ -91,29 +97,27 @@ class _ControlValiState extends State<ControlVali> {
             ),
           ),
           Expanded(
-            child: _isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : _searchResults.isNotEmpty
-                    ? ListView.builder(
-                        itemCount: _searchResults.length,
-                        itemBuilder: (context, index) {
-                          final product = _searchResults[index];
-                          return ListTile(
-                            title: Text(product['name']),
-                            subtitle: Text('Validade: ${product['validade']}'),
-                          );
-                        },
-                      )
-                    : const Center(
-                        child: Text("Nenhum produto encontrado"),
-                      ),
+            child: sortedResults.isNotEmpty
+                ? ListView.builder(
+                    itemCount: sortedResults.length,
+                    itemBuilder: (context, index) {
+                      final product = sortedResults[index];
+                      return ListTile(
+                        title: Text(product['produto']),
+                        subtitle: Text('Validade: ${product['validade']}'),
+                      );
+                    },
+                  )
+                : const Center(
+                    child: Text("Nenhum produto encontrado"),
+                  ),
           ),
         ],
       ),
       floatingActionButton: customFloatingActionButton(() {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const AddProductPage()),
+          MaterialPageRoute(builder: (context) => AddProductPage()),
         );
       }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -121,24 +125,56 @@ class _ControlValiState extends State<ControlVali> {
         onFloatingActionButtonPressed: () {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const AddProductPage()),
+            MaterialPageRoute(builder: (context) => AddProductPage()),
           );
         },
         onHomePressed: () {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
+            MaterialPageRoute(builder: (context) => const HomeScreen()), // Ação para o ícone para retornar a home
           );
         },
         onStoragePressed: () {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const ControlStock()),
+            MaterialPageRoute(builder: (context) => const ControlStock()), // Ação para o ícone para estoque
           );
         },
-        onUserPressed: () {},
-        onReportPressed: () {},
+        onUserPressed: () {
+          // Ação para o ícone de usuário
+        },
+        onReportPressed: () {
+          // Ação para o ícone de relatório
+        },
       ),
     );
+  }
+
+  DateTime _parseDate(String dateString) {
+    // Lógica de conversão de data
+    try {
+      return DateFormat('dd/MM/yyyy').parse(dateString);
+    } catch (e) {
+      print('Erro ao converter a data de validade: $e');
+      return DateTime.now();
+    }
+  }
+}
+
+class ControlValidateController {
+  final String baseUrl = 'http://localhost:3000/expiredAndNearExpiryProducts'; 
+  Future<List<dynamic>> fetchExpiredAndNearExpiryProducts() async {
+    try {
+      final response = await http.get(Uri.parse(baseUrl));
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        throw Exception('Erro HTTP: ${response.statusCode} - ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      print('Erro ao buscar produtos: $e');
+      throw Exception('Falha ao carregar produtos: $e');
+    }
   }
 }
