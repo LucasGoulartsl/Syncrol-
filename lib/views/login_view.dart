@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:my_project_flutter/views/register_view.dart';
+import 'package:my_project_flutter/views/forgot_password.dart'; // Importar a tela de recuperação de senha
 import 'package:my_project_flutter/utils/text.styles.dart';
 import 'home_view.dart';
 import '../utils/logo_helper.dart'; // Importa a função getShoppingCartLogo
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -100,6 +100,26 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
 
+                // Link "Esqueci a Senha?"
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ForgotPasswordView(),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    'Esqueci a Senha?',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+
                 const SizedBox(height: 20),
 
                 // Botão 'Entrar'
@@ -120,7 +140,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const RegisterScreen()),
+                        builder: (context) => const RegisterScreen(),
+                      ),
                     );
                   },
                   child: const Text('Registrar'),

@@ -101,6 +101,7 @@ class _ControlStockState extends State<ControlStock> {
         TextEditingController(text: product.lote);
     TextEditingController precoController =
         TextEditingController(text: product.precoUnitario);
+        
     TextEditingController quantidadeController =
         TextEditingController(text: product.quantidade);
     TextEditingController validadeController =
