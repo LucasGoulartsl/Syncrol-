@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:my_project_flutter/components/bottons_low.dart';
 import 'package:my_project_flutter/views/control_validate_view.dart';
+import 'package:my_project_flutter/views/export_view.dart';
 import 'package:my_project_flutter/views/home_view.dart';
 
 class AddProductPage extends StatefulWidget {
@@ -39,12 +40,12 @@ class _AddProductPageState extends State<AddProductPage> {
         title: const Text("Adicionar Produto"),
         backgroundColor: Colors.blue[300],
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back), //Seta para voltar
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => const HomeScreen()),
-            ); //Volta para a tela anterior
+            );
           },
         ),
       ),
@@ -55,15 +56,13 @@ class _AddProductPageState extends State<AddProductPage> {
             key: _formKey,
             child: Column(
               children: [
-                //Nome do Produto
                 TextFormField(
                   controller: produtoController,
-                  keyboardType: TextInputType.text,
                   decoration: const InputDecoration(
                     labelText: 'Nome do produto',
                     border: OutlineInputBorder(),
                   ),
-                  validator: (String? value) {
+                  validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Nome do produto obrigatório.';
                     }
@@ -72,18 +71,17 @@ class _AddProductPageState extends State<AddProductPage> {
                 ),
                 const SizedBox(height: 10),
 
-                //Código
+                // Campo para Código e Botões de Busca
                 Row(
                   children: [
                     Expanded(
                       child: TextFormField(
                         controller: codigoController,
-                        keyboardType: TextInputType.text,
                         decoration: const InputDecoration(
                           labelText: 'Código',
                           border: OutlineInputBorder(),
                         ),
-                        validator: (String? value) {
+                        validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Código obrigatório.';
                           }
@@ -93,25 +91,32 @@ class _AddProductPageState extends State<AddProductPage> {
                     ),
                     const SizedBox(width: 10),
                     IconButton(
-                      onPressed: scanBarcode, //Chama o método para escanear
-                      icon: const Icon(Icons.barcode_reader),
+                      onPressed: () async {
+                        // Busca manual com o código digitado
+                        if (codigoController.text.isNotEmpty) {
+                          await fetchProductInfo(codigoController.text);
+                        }
+                      },
+                      icon: const Icon(Icons.search),
+                    ),
+                    IconButton(
+                      onPressed: scanBarcode, // Método para escanear
+                      icon: const Icon(Icons.camera_alt),
                     ),
                   ],
                 ),
                 const SizedBox(height: 10),
 
-                //Lote e Preço Unitário
                 Row(
                   children: [
                     Expanded(
                       child: TextFormField(
                         controller: loteController,
-                        keyboardType: TextInputType.text,
                         decoration: const InputDecoration(
                           labelText: 'Lote',
                           border: OutlineInputBorder(),
                         ),
-                        validator: (String? value) {
+                        validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Lote obrigatório.';
                           }
@@ -123,12 +128,11 @@ class _AddProductPageState extends State<AddProductPage> {
                     Expanded(
                       child: TextFormField(
                         controller: precoUnitarioController,
-                        keyboardType: TextInputType.text,
                         decoration: const InputDecoration(
                           labelText: 'Preço Unitário',
                           border: OutlineInputBorder(),
                         ),
-                        validator: (String? value) {
+                        validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Preço unitário obrigatório.';
                           }
@@ -140,18 +144,16 @@ class _AddProductPageState extends State<AddProductPage> {
                 ),
                 const SizedBox(height: 10),
 
-                //Quantidade e Validade
                 Row(
                   children: [
                     Expanded(
                       child: TextFormField(
                         controller: quantidadeController,
-                        keyboardType: TextInputType.text,
                         decoration: const InputDecoration(
                           labelText: 'Qntd',
                           border: OutlineInputBorder(),
                         ),
-                        validator: (String? value) {
+                        validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Quantidade obrigatória.';
                           }
@@ -163,12 +165,11 @@ class _AddProductPageState extends State<AddProductPage> {
                     Expanded(
                       child: TextFormField(
                         controller: validadeController,
-                        keyboardType: TextInputType.text,
                         decoration: const InputDecoration(
                           labelText: 'Validade',
                           border: OutlineInputBorder(),
                         ),
-                        validator: (String? value) {
+                        validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Data de validade obrigatória.';
                           }
@@ -180,18 +181,16 @@ class _AddProductPageState extends State<AddProductPage> {
                 ),
                 const SizedBox(height: 10),
 
-                //Categoria e Marca
                 Row(
                   children: [
                     Expanded(
                       child: TextFormField(
                         controller: categoriaController,
-                        keyboardType: TextInputType.text,
                         decoration: const InputDecoration(
                           labelText: 'Categoria',
                           border: OutlineInputBorder(),
                         ),
-                        validator: (String? value) {
+                        validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Categoria obrigatória.';
                           }
@@ -203,12 +202,11 @@ class _AddProductPageState extends State<AddProductPage> {
                     Expanded(
                       child: TextFormField(
                         controller: marcaController,
-                        keyboardType: TextInputType.text,
                         decoration: const InputDecoration(
                           labelText: 'Marca',
                           border: OutlineInputBorder(),
                         ),
-                        validator: (String? value) {
+                        validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Marca obrigatória.';
                           }
@@ -220,42 +218,15 @@ class _AddProductPageState extends State<AddProductPage> {
                 ),
                 const SizedBox(height: 20),
 
-                // Botão de Adicionar
                 FloatingActionButton(
                   backgroundColor: Colors.blue.shade200,
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      sendData(); //Função para enviar os dados
+                      sendData();
                     }
                   },
                   child: const Icon(Icons.add),
                 ),
-                const SizedBox(height: 20),
-
-                //Lista de produtos adicionados
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: _product.length,
-                  itemBuilder: (context, index) {
-                    final product = _product[index];
-                    return Card(
-                      child: ListTile(
-                        leading: const Icon(Icons.inventory_2_outlined),
-                        title: Text(product.produto),
-                        subtitle: Text(
-                            'Código: ${product.codigo}\nLote: ${product.lote}\nPreço Unitário: ${product.precoUnitario}\nQuantidade: ${product.quantidade}\nValidade: ${product.validade}\nCategoria: ${product.categoria}\nMarca: ${product.marca}'),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.delete,
-                              color: Color.fromARGB(255, 0, 0, 0)),
-                          onPressed: () {
-                            _deleteProduct(product);
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                )
               ],
             ),
           ),
@@ -275,7 +246,11 @@ class _AddProductPageState extends State<AddProductPage> {
           );
         },
         onUserPressed: () {
-          //Ação para o ícone do usuário
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const ControlVali()),
+          );
+          //Ação para ir a validade
         },
         onStoragePressed: () {
           Navigator.pushReplacement(
@@ -284,10 +259,72 @@ class _AddProductPageState extends State<AddProductPage> {
           );
         },
         onReportPressed: () {
-          //Ação para o ícone de relatório
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const ExportScreen()),
+          );
+          // Ação para o ícone de relatório
         },
       ),
     );
+  }
+
+  Future<void> scanBarcode() async {
+    try {
+      String barcode = await FlutterBarcodeScanner.scanBarcode(
+          "#ff6666", "Cancelar", true, ScanMode.BARCODE);
+
+      if (barcode != "-1") {
+        setState(() {
+          codigoController.text = barcode;
+        });
+
+        // Consulta a API com o código escaneado
+        await fetchProductInfo(barcode);
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao escanear: $e')),
+      );
+    }
+  }
+
+  Future<void> fetchProductInfo(String barcode) async {
+    final url = 'https://world.openfoodfacts.org/api/v0/product/$barcode.json';
+
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final productData = json.decode(response.body);
+
+        if (productData['status'] == 1) {
+          // Produto encontrado
+          final product = productData['product'];
+
+          setState(() {
+            produtoController.text =
+                product['product_name'] ?? 'Produto desconhecido';
+            marcaController.text = product['brands'] ?? 'Marca desconhecida';
+            categoriaController.text =
+                product['categories'] ?? 'Categoria desconhecida';
+          });
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Produto não encontrado na API.')),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('Erro ao buscar informações do produto.')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro de conexão: $e')),
+      );
+    }
   }
 
   void sendData() async {
@@ -305,7 +342,7 @@ class _AddProductPageState extends State<AddProductPage> {
 
       try {
         final response = await http.post(
-          Uri.parse('http://localhost:3000/postProduct'),
+          Uri.parse('http://192.168.0.5:3000/postProduct'),
           headers: {"Content-Type": "application/json"},
           body: jsonEncode(data),
         );
@@ -330,7 +367,7 @@ class _AddProductPageState extends State<AddProductPage> {
 
   Future<void> _fetchProducts() async {
     final response =
-        await http.get(Uri.parse('http://localhost:3000/getAllProducts'));
+        await http.get(Uri.parse('http://192.168.0.5:3000/getAllProducts'));
 
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
@@ -339,46 +376,6 @@ class _AddProductPageState extends State<AddProductPage> {
       });
     } else {
       throw Exception('Falha ao carregar produtos');
-    }
-  }
-
-  Future<void> _deleteProduct(Product product) async {
-    try {
-      final response = await http.delete(
-        Uri.parse('http://localhost:3000/deleteProduct/${product.id}'),
-      );
-
-      if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Produto deletado com sucesso!')),
-        );
-        _fetchProducts(); //Atu a lista de produtos após excluir
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro ao deletar produto: ${response.body}')),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro de conexão: $e')),
-      );
-    }
-  }
-
-  Future<void> scanBarcode() async {
-    try {
-      String result = await FlutterBarcodeScanner.scanBarcode(
-          "#ff6666", "Cancelar", true, ScanMode.BARCODE);
-
-      if (result.isNotEmpty) {
-        setState(() {
-          codigoController.text = result;
-        });
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro ao escanear: $e')),
-      );
     }
   }
 }

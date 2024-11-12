@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class ForgotPasswordView extends StatelessWidget {
+  const ForgotPasswordView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue.shade200,
-        title: Text('Esqueci a Senha'),
+        title: const Text('Esqueci a Senha'),
       ),
       backgroundColor: Colors.blue.shade200,
       body: SingleChildScrollView(
@@ -15,8 +17,8 @@ class ForgotPasswordView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: 40),
-              Text(
+              const SizedBox(height: 40),
+              const Text(
                 'Recuperação de Senha',
                 style: TextStyle(
                   fontSize: 24,
@@ -25,18 +27,18 @@ class ForgotPasswordView extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               TextField(
                 decoration: InputDecoration(
                   labelText: 'Digite seu email',
-                  labelStyle: TextStyle(color: Colors.black),
+                  labelStyle: const TextStyle(color: Colors.black),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
-                    borderSide: BorderSide(color: Colors.white),
+                    borderSide: const BorderSide(color: Colors.white),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
-                    borderSide: BorderSide(color: Colors.white),
+                    borderSide: const BorderSide(color: Colors.white),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
@@ -46,13 +48,13 @@ class ForgotPasswordView extends StatelessWidget {
                   fillColor: Colors.white, // Alterado para branco
                 ),
                 keyboardType: TextInputType.emailAddress,
-                style: TextStyle(color: Colors.black), // Alterado para texto preto
+                style: const TextStyle(color: Colors.black), // Alterado para texto preto
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue.shade800,
-                  padding: EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -60,7 +62,7 @@ class ForgotPasswordView extends StatelessWidget {
                 onPressed: () {
                   // Lógica para enviar o email de recuperação
                 },
-                child: Text(
+                child: const Text(
                   'Enviar Link de Recuperação',
                   style: TextStyle(
                     fontSize: 16,

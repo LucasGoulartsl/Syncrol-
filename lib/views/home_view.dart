@@ -5,6 +5,7 @@ import 'package:my_project_flutter/views/about_view.dart';
 import 'package:my_project_flutter/views/add_product_view.dart';
 import 'package:my_project_flutter/views/control_stock_view.dart';
 import 'package:my_project_flutter/views/control_validate_view.dart';
+import 'package:my_project_flutter/views/export_view.dart';
 import 'package:my_project_flutter/views/login_view.dart'; // Ajuste o caminho conforme necessário
 
 class HomeScreen extends StatelessWidget {
@@ -99,7 +100,7 @@ class HomeScreen extends StatelessWidget {
           );
         },
         onHomePressed: () {
-          // Ação para o ícone de home
+          // VAZIO
         },
         onStoragePressed: () {
           Navigator.pushReplacement(
@@ -112,11 +113,15 @@ class HomeScreen extends StatelessWidget {
         onUserPressed: () {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const AboutPage()),
+            MaterialPageRoute(builder: (context) => const ControlVali()),
           );
-          // Ação para o ícone de usuário
+          // Ação para o ícone de validade
         },
         onReportPressed: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const ExportScreen()),
+          );
           // Ação para o ícone de relatório
         },
       ),

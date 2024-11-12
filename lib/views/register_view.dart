@@ -18,10 +18,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   Future<void> register(BuildContext context) async {
-    final url = Uri.parse('http://localhost:3000/auth/register');
+    final url = Uri.parse('http://192.168.0.5:3000/auth/login');
 
     try {
       final response = await http.post(

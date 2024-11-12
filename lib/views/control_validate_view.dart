@@ -5,6 +5,7 @@ import 'package:my_project_flutter/components/bottons_low.dart';
 import 'package:my_project_flutter/controller/control_validate_controller.dart';
 import 'package:my_project_flutter/views/add_product_view.dart';
 import 'package:my_project_flutter/views/control_stock_view.dart';
+import 'package:my_project_flutter/views/export_view.dart';
 import 'package:my_project_flutter/views/home_view.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -117,7 +118,7 @@ class _ControlValiState extends State<ControlVali> {
       floatingActionButton: customFloatingActionButton(() {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => AddProductPage()),
+          MaterialPageRoute(builder: (context) => const AddProductPage()),
         );
       }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -125,7 +126,7 @@ class _ControlValiState extends State<ControlVali> {
         onFloatingActionButtonPressed: () {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => AddProductPage()),
+            MaterialPageRoute(builder: (context) => const AddProductPage()),
           );
         },
         onHomePressed: () {
@@ -141,9 +142,13 @@ class _ControlValiState extends State<ControlVali> {
           );
         },
         onUserPressed: () {
-          // Ação para o ícone de usuário
+          // Voce ja ta na validade
         },
         onReportPressed: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const ExportScreen()),
+          );
           // Ação para o ícone de relatório
         },
       ),
@@ -162,7 +167,7 @@ class _ControlValiState extends State<ControlVali> {
 }
 
 class ControlValidateController {
-  final String baseUrl = 'http://localhost:3000/expiredAndNearExpiryProducts'; 
+  final String baseUrl = 'http://192.168.0.5:3000/expiredAndNearExpiryProducts'; 
   Future<List<dynamic>> fetchExpiredAndNearExpiryProducts() async {
     try {
       final response = await http.get(Uri.parse(baseUrl));

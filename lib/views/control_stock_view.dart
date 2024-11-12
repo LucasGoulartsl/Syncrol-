@@ -3,6 +3,8 @@ import 'package:my_project_flutter/components/app_bar.dart';
 import 'package:my_project_flutter/components/bottons_low.dart';
 import 'package:my_project_flutter/controller/control_stock_controller.dart';
 import 'package:my_project_flutter/views/add_product_view.dart';
+import 'package:my_project_flutter/views/control_validate_view.dart';
+import 'package:my_project_flutter/views/export_view.dart';
 import 'package:my_project_flutter/views/home_view.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -26,7 +28,7 @@ class _ControlStockState extends State<ControlStock> {
 
   Future<void> _fetchProducts() async {
     final response =
-        await http.get(Uri.parse('http://localhost:3000/getAllProducts'));
+        await http.get(Uri.parse('http://192.168.0.5:3000/getAllProducts'));
 
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
@@ -56,7 +58,7 @@ class _ControlStockState extends State<ControlStock> {
 
   Future<void> _updateProduct(Product product) async {
     final response = await http.put(
-      Uri.parse('http://localhost:3000/putProduct/${product.id}'),
+      Uri.parse('http://192.168.0.5:3000/putProduct/${product.id}'),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({
         'produto': product.produto,
@@ -79,7 +81,7 @@ class _ControlStockState extends State<ControlStock> {
 
   Future<void> _deleteProduct(Product product) async {
     final response = await http.delete(
-      Uri.parse('http://localhost:3000/deleteProduct/${product.id}'),
+      Uri.parse('http://192.168.0.5:3000/deleteProduct/${product.id}'),
     );
 
     if (response.statusCode == 200) {
@@ -171,7 +173,7 @@ class _ControlStockState extends State<ControlStock> {
                     Navigator.of(context).pop();
                   },
                 ),
-                Spacer(),
+                const Spacer(),
                 TextButton(
                   child: const Text("Cancelar"),
                   onPressed: () {
@@ -344,9 +346,23 @@ class _ControlStockState extends State<ControlStock> {
             MaterialPageRoute(builder: (context) => const HomeScreen()),
           );
         },
-        onStoragePressed: () {},
-        onUserPressed: () {},
-        onReportPressed: () {},
+        onStoragePressed: () {
+          // Voce ja ta no estoque
+        },
+        onUserPressed: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const ControlVali()),
+          );
+          // Ação para o ícone de validade
+        },
+        onReportPressed: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const ExportScreen()),
+          );
+          // Ação para o ícone de relatório
+        },
       ),
     );
   }
