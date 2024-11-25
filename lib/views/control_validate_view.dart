@@ -63,13 +63,13 @@ class _ControlValiState extends State<ControlVali> {
       DateTime expiryDateA = _parseDate(a['validade']);
       DateTime expiryDateB = _parseDate(b['validade']);
 
-      // Primeiro, produtos vencidos
+      
       if (expiryDateA.isBefore(DateTime.now()) && expiryDateB.isAfter(DateTime.now())) {
-        return -1; // A vem antes de B
+        return -1; 
       } else if (expiryDateA.isAfter(DateTime.now()) && expiryDateB.isBefore(DateTime.now())) {
-        return 1; // B vem antes de A
+        return 1; 
       } else {
-        // Se ambos estão vencidos ou próximos a vencer, ordenar por data
+        
         return expiryDateA.compareTo(expiryDateB);
       }
     });
@@ -98,19 +98,38 @@ class _ControlValiState extends State<ControlVali> {
             ),
           ),
           Expanded(
-            child: sortedResults.isNotEmpty
-                ? ListView.builder(
+            child: _searchResults.isEmpty
+                ? const Center(child: Text("Nenhum produto encontrado"))
+                : ListView.builder(
                     itemCount: sortedResults.length,
                     itemBuilder: (context, index) {
                       final product = sortedResults[index];
-                      return ListTile(
-                        title: Text(product['produto']),
-                        subtitle: Text('Validade: ${product['validade']}'),
+                      final borderColor = _controller.determineBorderColor(product['validade']);
+
+                      return Container(
+                        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: borderColor, width: 2),
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.white,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              product['produto'],
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text('Validade: ${product['validade']}'),
+                          ],
+                        ),
                       );
                     },
-                  )
-                : const Center(
-                    child: Text("Nenhum produto encontrado"),
                   ),
           ),
         ],
@@ -142,23 +161,22 @@ class _ControlValiState extends State<ControlVali> {
           );
         },
         onUserPressed: () {
-          // Voce ja ta na validade
+          
         },
         onReportPressed: () {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => const ExportScreen()),
           );
-          // Ação para o ícone de relatório
         },
       ),
     );
   }
 
   DateTime _parseDate(String dateString) {
-    // Lógica de conversão de data
+    
     try {
-      return DateFormat('dd/MM/yyyy').parse(dateString);
+      return DateFormat('dd/MM/yyyy').parse(dateString); 
     } catch (e) {
       print('Erro ao converter a data de validade: $e');
       return DateTime.now();
@@ -167,7 +185,8 @@ class _ControlValiState extends State<ControlVali> {
 }
 
 class ControlValidateController {
-  final String baseUrl = 'http://192.168.0.5:3000/expiredAndNearExpiryProducts'; 
+  final String baseUrl = 'http://localhost:3000/expiredAndNearExpiryProducts';
+
   Future<List<dynamic>> fetchExpiredAndNearExpiryProducts() async {
     try {
       final response = await http.get(Uri.parse(baseUrl));
@@ -175,11 +194,35 @@ class ControlValidateController {
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
       } else {
-        throw Exception('Erro HTTP: ${response.statusCode} - ${response.reasonPhrase}');
+        throw Exception(
+            'Erro HTTP: ${response.statusCode} - ${response.reasonPhrase}');
       }
     } catch (e) {
       print('Erro ao buscar produtos: $e');
       throw Exception('Falha ao carregar produtos: $e');
+    }
+  }
+
+  DateTime _parseDate(String dateString) {
+    try {
+      return DateFormat('dd/MM/yyyy').parse(dateString); 
+    } catch (e) {
+      print('Erro ao converter a data de validade: $e');
+      return DateTime.now();
+    }
+  }
+
+  Color determineBorderColor(String validade) {
+    final now = DateTime.now();
+    final nextMonth = now.add(Duration(days: 30));
+    final validadeDate = _parseDate(validade);
+
+    if (validadeDate.isBefore(now)) {
+      return Colors.red; 
+    } else if (validadeDate.isBefore(nextMonth)) {
+      return Colors.yellow; 
+    } else {
+      return Colors.green; 
     }
   }
 }
