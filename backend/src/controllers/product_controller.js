@@ -93,15 +93,42 @@ exports.deleteProduct = async (req, res) => {
 
 exports.getExpiredAndNearExpiryProducts = async (req, res) => {
   try {
-    const today = new Date();
-    const nextMonth = new Date(today);
-    nextMonth.setDate(today.getDate() + 30);
+    const today = new Date(); 
+    today.setHours(0, 0, 0, 0); 
 
-    const products = await Product.find({
-      validade: { $lte: nextMonth.toISOString() },
+    const nextMonth = new Date(today);
+    nextMonth.setDate(today.getDate() + 30); 
+
+    const products = await Product.find(); 
+
+    const updatedProducts = products.map((product) => {
+      
+      const validadeParts = product.validade.split('/');
+      const validade = new Date(
+        validadeParts[2], 
+        validadeParts[1] - 1, 
+        validadeParts[0] 
+      );
+
+      let status;
+      if (validade < today) {
+        status = "vencido"; 
+      } else if (validade <= nextMonth) {
+        status = "próximo"; 
+      } else {
+        status = "válido"; 
+      }
+
+      const validadeFormatada = `${validade.getDate().toString().padStart(2, '0')}/${(validade.getMonth() + 1).toString().padStart(2, '0')}/${validade.getFullYear()}`;
+
+      return {
+        ...product._doc,
+        validade: validadeFormatada, 
+        status,
+      };
     });
 
-    res.status(200).json(products);
+    res.status(200).json(updatedProducts); 
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
