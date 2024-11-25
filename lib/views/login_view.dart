@@ -21,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final storage = const FlutterSecureStorage(); // Para armazenar o token
 
   Future<void> login(BuildContext context) async {
-    final url = Uri.parse('http://192.168.0.5:3000/auth/login');
+    final url = Uri.parse('http://localhost:3000/auth/login');
 
     try {
       final response = await http.post(

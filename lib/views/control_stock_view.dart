@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:my_project_flutter/components/app_bar.dart';
 import 'package:my_project_flutter/components/bottons_low.dart';
-import 'package:my_project_flutter/controller/control_stock_controller.dart';
 import 'package:my_project_flutter/views/add_product_view.dart';
 import 'package:my_project_flutter/views/control_validate_view.dart';
 import 'package:my_project_flutter/views/export_view.dart';
 import 'package:my_project_flutter/views/home_view.dart';
+import 'package:my_project_flutter/model/product_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -28,7 +28,7 @@ class _ControlStockState extends State<ControlStock> {
 
   Future<void> _fetchProducts() async {
     final response =
-        await http.get(Uri.parse('http://192.168.0.5:3000/getAllProducts'));
+        await http.get(Uri.parse('http://localhost:3000/getAllProducts'));
 
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
@@ -58,7 +58,7 @@ class _ControlStockState extends State<ControlStock> {
 
   Future<void> _updateProduct(Product product) async {
     final response = await http.put(
-      Uri.parse('http://192.168.0.5:3000/putProduct/${product.id}'),
+      Uri.parse('http://localhost:3000/putProduct/${product.id}'),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({
         'produto': product.produto,
@@ -81,7 +81,7 @@ class _ControlStockState extends State<ControlStock> {
 
   Future<void> _deleteProduct(Product product) async {
     final response = await http.delete(
-      Uri.parse('http://192.168.0.5:3000/deleteProduct/${product.id}'),
+      Uri.parse('http://localhost:3000/deleteProduct/${product.id}'),
     );
 
     if (response.statusCode == 200) {
@@ -364,44 +364,6 @@ class _ControlStockState extends State<ControlStock> {
           // Ação para o ícone de relatório
         },
       ),
-    );
-  }
-}
-
-class Product {
-  String id;
-  String produto;
-  String codigo;
-  String lote;
-  String precoUnitario;
-  String quantidade;
-  String validade;
-  String categoria;
-  String marca;
-
-  Product({
-    required this.id,
-    required this.produto,
-    required this.codigo,
-    required this.lote,
-    required this.precoUnitario,
-    required this.quantidade,
-    required this.validade,
-    required this.categoria,
-    required this.marca,
-  });
-
-  factory Product.fromJson(Map<String, dynamic> json) {
-    return Product(
-      id: json['_id'],
-      produto: json['produto'],
-      codigo: json['codigo'],
-      lote: json['lote'],
-      precoUnitario: json['preco_unitario'],
-      quantidade: json['quantidade'],
-      validade: json['validade'],
-      categoria: json['categoria'],
-      marca: json['marca'],
     );
   }
 }

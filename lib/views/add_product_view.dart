@@ -6,6 +6,7 @@ import 'package:my_project_flutter/components/bottons_low.dart';
 import 'package:my_project_flutter/views/control_validate_view.dart';
 import 'package:my_project_flutter/views/export_view.dart';
 import 'package:my_project_flutter/views/home_view.dart';
+import 'package:my_project_flutter/model/product_model.dart';
 
 class AddProductPage extends StatefulWidget {
   const AddProductPage({super.key});
@@ -227,6 +228,31 @@ class _AddProductPageState extends State<AddProductPage> {
                   },
                   child: const Icon(Icons.add),
                 ),
+                const SizedBox(height: 20),
+
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: _product.length,
+                  itemBuilder: (context, index) {
+                    final product = _product[index];
+                    return Card(
+                      child: ListTile(
+                        leading: const Icon(Icons.inventory_2_outlined),
+                        title: Text(product.produto),
+                        subtitle: Text(
+                            'Código: ${product.codigo}\nLote: ${product.lote}\nPreço Unitário: ${product.precoUnitario}\nQuantidade: ${product.quantidade}\nValidade: ${product.validade}\nCategoria: ${product.categoria}\nMarca: ${product.marca}'),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.delete,
+                              color: Color.fromARGB(255, 0, 0, 0)),
+                          onPressed: () {
+                            _deleteProduct(product);
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -342,7 +368,7 @@ class _AddProductPageState extends State<AddProductPage> {
 
       try {
         final response = await http.post(
-          Uri.parse('http://192.168.0.5:3000/postProduct'),
+          Uri.parse('http://localhost:3000/postProduct'),
           headers: {"Content-Type": "application/json"},
           body: jsonEncode(data),
         );
@@ -367,7 +393,7 @@ class _AddProductPageState extends State<AddProductPage> {
 
   Future<void> _fetchProducts() async {
     final response =
-        await http.get(Uri.parse('http://192.168.0.5:3000/getAllProducts'));
+        await http.get(Uri.parse('http://localhost:3000/getAllProducts'));
 
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
@@ -378,42 +404,27 @@ class _AddProductPageState extends State<AddProductPage> {
       throw Exception('Falha ao carregar produtos');
     }
   }
-}
 
-class Product {
-  final String id;
-  final String produto;
-  final String codigo;
-  final String lote;
-  final String precoUnitario;
-  final String quantidade;
-  final String validade;
-  final String categoria;
-  final String marca;
+  Future<void> _deleteProduct(Product product) async {
+    try {
+      final response = await http.delete(
+        Uri.parse('http://localhost:3000/deleteProduct/${product.id}'),
+      );
 
-  Product({
-    required this.id,
-    required this.produto,
-    required this.codigo,
-    required this.lote,
-    required this.precoUnitario,
-    required this.quantidade,
-    required this.validade,
-    required this.categoria,
-    required this.marca,
-  });
-
-  factory Product.fromJson(Map<String, dynamic> json) {
-    return Product(
-      id: json['_id'],
-      produto: json['produto'],
-      codigo: json['codigo'],
-      lote: json['lote'],
-      precoUnitario: json['preco_unitario'],
-      quantidade: json['quantidade'],
-      validade: json['validade'],
-      categoria: json['categoria'],
-      marca: json['marca'],
-    );
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Produto deletado com sucesso!')),
+        );
+        _fetchProducts(); //Atu a lista de produtos após excluir
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erro ao deletar produto: ${response.body}')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro de conexão: $e')),
+      );
+    }
   }
 }
