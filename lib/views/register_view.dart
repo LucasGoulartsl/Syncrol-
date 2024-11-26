@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:my_project_flutter/model/environment.dart';
 import 'package:my_project_flutter/views/login_view.dart';
 import 'home_view.dart';
 import '../utils/input_decoration.dart' as input_utils;
@@ -22,7 +23,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       TextEditingController();
 
   Future<void> register(BuildContext context) async {
-    final url = Uri.parse('http://localhost:3000/auth/login');
+    final url = Uri.parse('${Environment.baseUrl}/auth/login');
 
     try {
       final response = await http.post(

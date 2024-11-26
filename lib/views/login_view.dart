@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:my_project_flutter/model/environment.dart';
 import 'package:my_project_flutter/views/register_view.dart';
 import 'package:my_project_flutter/views/forgot_password.dart'; // Importar a tela de recuperação de senha
 import 'package:my_project_flutter/utils/text.styles.dart';
@@ -21,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final storage = const FlutterSecureStorage(); // Para armazenar o token
 
   Future<void> login(BuildContext context) async {
-    final url = Uri.parse('http://localhost:3000/auth/login');
+    final url = Uri.parse('${Environment.baseUrl}/auth/login');
 
     try {
       final response = await http.post(

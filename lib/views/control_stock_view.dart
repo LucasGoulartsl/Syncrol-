@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_project_flutter/components/app_bar.dart';
 import 'package:my_project_flutter/components/bottons_low.dart';
+import 'package:my_project_flutter/model/environment.dart';
 import 'package:my_project_flutter/views/add_product_view.dart';
 import 'package:my_project_flutter/views/control_validate_view.dart';
 import 'package:my_project_flutter/views/export_view.dart';
@@ -28,7 +29,7 @@ class _ControlStockState extends State<ControlStock> {
 
   Future<void> _fetchProducts() async {
     final response =
-        await http.get(Uri.parse('http://localhost:3000/getAllProducts'));
+        await http.get(Uri.parse('${Environment.baseUrl}/getAllProducts'));
 
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
@@ -58,7 +59,7 @@ class _ControlStockState extends State<ControlStock> {
 
   Future<void> _updateProduct(Product product) async {
     final response = await http.put(
-      Uri.parse('http://localhost:3000/putProduct/${product.id}'),
+      Uri.parse('${Environment.baseUrl}/putProduct/${product.id}'),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({
         'produto': product.produto,
@@ -81,7 +82,7 @@ class _ControlStockState extends State<ControlStock> {
 
   Future<void> _deleteProduct(Product product) async {
     final response = await http.delete(
-      Uri.parse('http://localhost:3000/deleteProduct/${product.id}'),
+      Uri.parse('${Environment.baseUrl}/deleteProduct/${product.id}'),
     );
 
     if (response.statusCode == 200) {

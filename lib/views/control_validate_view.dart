@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:my_project_flutter/components/app_bar.dart';
 import 'package:my_project_flutter/components/bottons_low.dart';
+import 'package:my_project_flutter/model/environment.dart';
 import 'package:my_project_flutter/views/add_product_view.dart';
 import 'package:my_project_flutter/views/control_stock_view.dart';
 import 'package:my_project_flutter/views/export_view.dart';
@@ -184,7 +185,7 @@ class _ControlValiState extends State<ControlVali> {
 }
 
 class ControlValidateController {
-  final String baseUrl = 'http://localhost:3000/expiredAndNearExpiryProducts';
+  final String baseUrl = '${Environment.baseUrl}/expiredAndNearExpiryProducts';
 
   Future<List<dynamic>> fetchExpiredAndNearExpiryProducts() async {
     try {
@@ -213,7 +214,7 @@ class ControlValidateController {
 
   Color determineBorderColor(String validade) {
     final now = DateTime.now();
-    final nextMonth = now.add(Duration(days: 30));
+    final nextMonth = now.add(const Duration(days: 30));
     final validadeDate = _parseDate(validade);
 
     if (validadeDate.isBefore(now)) {

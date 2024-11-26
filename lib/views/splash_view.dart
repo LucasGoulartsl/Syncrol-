@@ -28,25 +28,36 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue.shade200, // Cor de fundo
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            // Logo
-            getShoppingCartLogo(
-              width: 150, // Ajuste o tamanho da logo conforme necessário
-              height: 150, // Ajuste o tamanho da logo conforme necessário
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          // Logo
+          getShoppingCartLogo(
+            width: 150,
+            height: 150, 
+          ),
+          const SizedBox(height: 20), // Espaço entre a logo e o texto
+          // Texto
+          Text(
+            'SYNCROL+',
+            style: syncrolTextStyle().copyWith(
+              fontSize: 30, // Ajuste o tamanho da fonte conforme necessário
             ),
-            const SizedBox(height: 20), // Espaço entre a logo e o texto
-            // Texto
-            Text(
-              'SYNCROL+',
-              style: syncrolTextStyle().copyWith(
-                fontSize: 30, // Ajuste o tamanho da fonte conforme necessário
+          ),
+          const SizedBox(height: 50), // Espaço entre o texto e a parte inferior
+          // Alinha o loading na parte inferior da tela
+          const Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: EdgeInsets.only(
+                  bottom: 30.0), 
+              child: CircularProgressIndicator(
+                valueColor:
+                    AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 0, 0, 0)), // Cor branca
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
