@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_project_flutter/components/app_bar.dart'; // Importa o widget AppBar personalizado
 import 'package:my_project_flutter/components/bottons_low.dart'; // Importa o widget BottomAppBar personalizado
+import 'package:my_project_flutter/components/custom_drawer.dart';
 import 'package:my_project_flutter/views/about_view.dart';
 import 'package:my_project_flutter/views/add_product_view.dart';
 import 'package:my_project_flutter/views/control_stock_view.dart';
@@ -15,42 +16,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppBar(context: context, showUserButton: true),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text(
-                'Menu',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text('Home'),
-              onTap: () {
-                Navigator.pop(context); // Fecha o drawer
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.exit_to_app),
-              title: const Text('Sair'),
-              onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginScreen()),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: const CustomDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

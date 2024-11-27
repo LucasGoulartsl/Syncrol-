@@ -1,41 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:my_project_flutter/views/home_view.dart'; // Importar sua tela inicial
+import 'package:my_project_flutter/views/home_view.dart'; // Substitua pelo caminho correto da sua tela inicial
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
 
-  // Funções para redirecionamento às redes sociais
-  Future<void> _launchInstagram() async {
-    final Uri url =
-        Uri.parse('https://www.instagram.com/sampa.019'); // link do Instagram
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      throw 'Não foi possível abrir $url';
+  // Função para redirecionar ao Instagram
+  Future<void> _launchInstagram(BuildContext context) async {
+    final Uri url = Uri.parse('https://www.instagram.com/sampa.019');
+    try {
+      bool launched =
+          await launchUrl(url, mode: LaunchMode.externalApplication);
+      if (!launched) {
+        throw 'Não foi possível abrir $url';
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Não foi possível abrir o Instagram.'),
+        ),
+      );
     }
   }
 
-  Future<void> _launchEmail() async {
+  // Função para redirecionar ao e-mail
+  Future<void> _launchEmail(BuildContext context) async {
     final Uri emailUri = Uri(
       scheme: 'mailto',
-      path: 'suporte@email.com', // email
-      query: 'subject=Contato pelo App', // Assunto do email
+      path: 'suporte@email.com',
+      query: 'subject=Contato pelo App',
     );
-    if (await canLaunchUrl(emailUri)) {
-      await launchUrl(emailUri);
-    } else {
-      throw 'Não foi possível enviar o email';
+    try {
+      bool launched =
+          await launchUrl(emailUri, mode: LaunchMode.externalApplication);
+      if (!launched) {
+        throw 'Não foi possível enviar o email';
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Não foi possível enviar o email.'),
+        ),
+      );
     }
   }
 
-  Future<void> _launchTwitter() async {
-    final Uri url = Uri.parse('https://twitter.com/'); // link do Twitter
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      throw 'Não foi possível abrir $url';
+  // Função para redirecionar ao Twitter
+  Future<void> _launchTwitter(BuildContext context) async {
+    final Uri url = Uri.parse('https://twitter.com/');
+    try {
+      bool launched =
+          await launchUrl(url, mode: LaunchMode.externalApplication);
+      if (!launched) {
+        throw 'Não foi possível abrir $url';
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Não foi possível abrir o Twitter.'),
+        ),
+      );
     }
   }
 
@@ -62,7 +87,7 @@ class AboutPage extends StatelessWidget {
           children: [
             const SizedBox(height: 20),
             const Icon(
-              Icons.shopping_cart, // Seu ícone personalizado aqui
+              Icons.shopping_cart,
               size: 100,
               color: Colors.blue,
             ),
@@ -93,22 +118,20 @@ class AboutPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
-                  icon: const Icon(
-                      FontAwesomeIcons.instagram), // ícone do Instagram
-                  onPressed: _launchInstagram,
+                  icon: const Icon(FontAwesomeIcons.instagram),
+                  onPressed: () => _launchInstagram(context),
                   iconSize: 40,
                 ),
                 const SizedBox(width: 20),
                 IconButton(
-                  icon: const Icon(Icons.email_outlined), // ícone do Gmail
-                  onPressed: _launchEmail,
+                  icon: const Icon(Icons.email_outlined),
+                  onPressed: () => _launchEmail(context),
                   iconSize: 40,
                 ),
                 const SizedBox(width: 20),
                 IconButton(
-                  icon:
-                      const Icon(FontAwesomeIcons.twitter), // ícone do Twitter
-                  onPressed: _launchTwitter,
+                  icon: const Icon(FontAwesomeIcons.twitter),
+                  onPressed: () => _launchTwitter(context),
                   iconSize: 40,
                 ),
               ],

@@ -95,7 +95,7 @@ class _ExportScreenState extends State<ExportScreen> {
                       groupValue: exportOption,
                       onChanged: (value) {
                         setState(() {
-                          exportOption = value as String?;
+                          exportOption = value;
                         });
                       },
                       title: const Text('Por estoque'),
@@ -105,7 +105,7 @@ class _ExportScreenState extends State<ExportScreen> {
                       groupValue: exportOption,
                       onChanged: (value) {
                         setState(() {
-                          exportOption = value as String?;
+                          exportOption = value;
                         });
                       },
                       title: const Text('Por validade'),

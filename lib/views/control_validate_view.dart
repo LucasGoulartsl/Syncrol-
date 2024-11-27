@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:my_project_flutter/components/app_bar.dart';
 import 'package:my_project_flutter/components/bottons_low.dart';
+import 'package:my_project_flutter/components/custom_drawer.dart';
 import 'package:my_project_flutter/model/environment.dart';
 import 'package:my_project_flutter/views/add_product_view.dart';
 import 'package:my_project_flutter/views/control_stock_view.dart';
@@ -32,7 +33,8 @@ class _ControlValiState extends State<ControlVali> {
       });
     } else {
       setState(() {
-        _searchResults = _allProducts; // Resetar para todos os produtos se a pesquisa estiver vazia
+        _searchResults =
+            _allProducts; // Resetar para todos os produtos se a pesquisa estiver vazia
       });
     }
   }
@@ -63,13 +65,13 @@ class _ControlValiState extends State<ControlVali> {
       DateTime expiryDateA = _parseDate(a['validade']);
       DateTime expiryDateB = _parseDate(b['validade']);
 
-      
-      if (expiryDateA.isBefore(DateTime.now()) && expiryDateB.isAfter(DateTime.now())) {
-        return -1; 
-      } else if (expiryDateA.isAfter(DateTime.now()) && expiryDateB.isBefore(DateTime.now())) {
-        return 1; 
+      if (expiryDateA.isBefore(DateTime.now()) &&
+          expiryDateB.isAfter(DateTime.now())) {
+        return -1;
+      } else if (expiryDateA.isAfter(DateTime.now()) &&
+          expiryDateB.isBefore(DateTime.now())) {
+        return 1;
       } else {
-        
         return expiryDateA.compareTo(expiryDateB);
       }
     });
@@ -78,10 +80,12 @@ class _ControlValiState extends State<ControlVali> {
 
   @override
   Widget build(BuildContext context) {
-    final sortedResults = _sortProducts(_searchResults); // Ordena os produtos para exibição
+    final sortedResults =
+        _sortProducts(_searchResults); // Ordena os produtos para exibição
 
     return Scaffold(
-      appBar: customAppBar(context: context, showUserButton: true), // Reutiliza o AppBar customizado
+      appBar: customAppBar(context: context, showUserButton: true),
+      drawer: const CustomDrawer(), 
       body: Column(
         children: [
           Padding(
@@ -104,10 +108,12 @@ class _ControlValiState extends State<ControlVali> {
                     itemCount: sortedResults.length,
                     itemBuilder: (context, index) {
                       final product = sortedResults[index];
-                      final borderColor = _controller.determineBorderColor(product['validade']);
+                      final borderColor =
+                          _controller.determineBorderColor(product['validade']);
 
                       return Container(
-                        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 16),
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
                           border: Border.all(color: borderColor, width: 2),
@@ -151,18 +157,20 @@ class _ControlValiState extends State<ControlVali> {
         onHomePressed: () {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()), // Ação para o ícone para retornar a home
+            MaterialPageRoute(
+                builder: (context) =>
+                    const HomeScreen()), // Ação para o ícone para retornar a home
           );
         },
         onStoragePressed: () {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const ControlStock()), // Ação para o ícone para estoque
+            MaterialPageRoute(
+                builder: (context) =>
+                    const ControlStock()), // Ação para o ícone para estoque
           );
         },
-        onUserPressed: () {
-          
-        },
+        onUserPressed: () {},
         onReportPressed: () {
           Navigator.pushReplacement(
             context,
@@ -174,9 +182,8 @@ class _ControlValiState extends State<ControlVali> {
   }
 
   DateTime _parseDate(String dateString) {
-    
     try {
-      return DateFormat('dd/MM/yyyy').parse(dateString); 
+      return DateFormat('dd/MM/yyyy').parse(dateString);
     } catch (e) {
       print('Erro ao converter a data de validade: $e');
       return DateTime.now();
@@ -205,7 +212,7 @@ class ControlValidateController {
 
   DateTime _parseDate(String dateString) {
     try {
-      return DateFormat('dd/MM/yyyy').parse(dateString); 
+      return DateFormat('dd/MM/yyyy').parse(dateString);
     } catch (e) {
       print('Erro ao converter a data de validade: $e');
       return DateTime.now();
@@ -218,11 +225,11 @@ class ControlValidateController {
     final validadeDate = _parseDate(validade);
 
     if (validadeDate.isBefore(now)) {
-      return Colors.red; 
+      return Colors.red;
     } else if (validadeDate.isBefore(nextMonth)) {
-      return Colors.yellow; 
+      return Colors.yellow;
     } else {
-      return Colors.green; 
+      return Colors.green;
     }
   }
 }

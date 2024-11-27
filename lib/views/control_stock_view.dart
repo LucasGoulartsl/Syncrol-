@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_project_flutter/components/app_bar.dart';
 import 'package:my_project_flutter/components/bottons_low.dart';
+import 'package:my_project_flutter/components/custom_drawer.dart';
 import 'package:my_project_flutter/model/environment.dart';
 import 'package:my_project_flutter/views/add_product_view.dart';
 import 'package:my_project_flutter/views/control_validate_view.dart';
@@ -104,7 +105,7 @@ class _ControlStockState extends State<ControlStock> {
         TextEditingController(text: product.lote);
     TextEditingController precoController =
         TextEditingController(text: product.precoUnitario);
-        
+
     TextEditingController quantidadeController =
         TextEditingController(text: product.quantidade);
     TextEditingController validadeController =
@@ -210,33 +211,7 @@ class _ControlStockState extends State<ControlStock> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppBar(context: context, showUserButton: true),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Text(
-                'Menu',
-                style: TextStyle(color: Colors.white, fontSize: 24),
-              ),
-            ),
-            ListTile(
-              title: const Text('Home'),
-              onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
-                );
-              },
-            ),
-            ListTile(
-              title: const Text('Controle de Estoque'),
-              onTap: () {},
-            ),
-          ],
-        ),
-      ),
+      drawer: const CustomDrawer(),
       body: Column(
         children: [
           Padding(
