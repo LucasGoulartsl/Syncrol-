@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:my_project_flutter/model/environment.dart';
 import 'package:my_project_flutter/views/register_view.dart';
-import 'package:my_project_flutter/views/forgot_password.dart'; // Importar a tela de recuperação de senha
+import 'package:my_project_flutter/views/forgot_password.dart'; // Importa a tela de recuperação de senha
 import 'package:my_project_flutter/utils/text.styles.dart';
 import 'home_view.dart';
 import '../utils/logo_helper.dart'; // Importa a função getShoppingCartLogo
@@ -22,6 +22,12 @@ class _LoginScreenState extends State<LoginScreen> {
   final storage = const FlutterSecureStorage(); // Para armazenar o token
 
   Future<void> login(BuildContext context) async {
+    // Verifica se os campos de e-mail e senha estão vazios
+    if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+      _showErrorDialog(context, 'Campos de e-mail e senha não podem estar vazios.');
+      return; // Não faz a requisição se os campos estiverem vazios
+    }
+
     final url = Uri.parse('${Environment.baseUrl}/auth/login');
 
     try {
@@ -46,11 +52,14 @@ class _LoginScreenState extends State<LoginScreen> {
           context,
           MaterialPageRoute(builder: (context) => const HomeScreen()),
         );
+      } else if (response.statusCode == 404) {
+        final data = jsonDecode(response.body);
+        _showErrorDialog(context, data['msg']);
+      } else if (response.statusCode == 401) {
+        final data = jsonDecode(response.body);
+        _showErrorDialog(context, data['msg']);
       } else {
-        print('Erro ao se conectar: ${response.body}');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro ao se conectar: ${response.body}')),
-        );
+        _showErrorDialog(context, 'Erro desconhecido. Tente novamente.');
       }
     } catch (error) {
       print('Erro ao se conectar ao backend: $error');
@@ -58,6 +67,27 @@ class _LoginScreenState extends State<LoginScreen> {
         SnackBar(content: Text('Erro de conexão: $error')),
       );
     }
+  }
+
+  // Função para mostrar o pop-up de erro
+  void _showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Erro'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Fechar o pop-up
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -125,18 +155,37 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 // Botão 'Entrar'
                 ElevatedButton(
-                  style: elevatedButtonStyle(Colors.blue.shade800),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.blue.shade800),
+                    padding: MaterialStateProperty.all(
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                    ),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    )),
+                  ),
                   onPressed: () {
                     login(context); // Chama a função de login
                   },
-                  child: const Text('Entrar'),
+                  child: const Text(
+                    'Entrar',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
 
                 const SizedBox(height: 10),
 
                 // Botão 'Registrar'
                 ElevatedButton(
-                  style: elevatedButtonStyle(Colors.blue.shade800),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.blue.shade800),
+                    padding: MaterialStateProperty.all(
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                    ),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    )),
+                  ),
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
@@ -145,7 +194,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     );
                   },
-                  child: const Text('Registrar'),
+                  child: const Text(
+                    'Registrar',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ],
             ),

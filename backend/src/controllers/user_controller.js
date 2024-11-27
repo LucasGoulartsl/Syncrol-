@@ -43,20 +43,40 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
-  // Validações
+  // Validações básicas
   if (!email) return res.status(422).json({ msg: "O email é obrigatório" });
   if (!password) return res.status(422).json({ msg: "A senha é obrigatória" });
 
-  // Checar se o usuário existe
-  const user = await User.findOne({ email });
-  if (!user) return res.status(404).json({ msg: "Usuário não encontrado" });
+  try {
+    // Checar se o usuário existe
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ 
+        msg: "Usuário não encontrado", 
+        code: "USER_NOT_FOUND" 
+      });
+    }
 
-  // Verificar senha
-  const checkPassword = await bcrypt.compare(password, user.password);
-  if (!checkPassword) return res.status(422).json({ msg: "Senha inválida" });
+    // Verificar senha
+    const checkPassword = await bcrypt.compare(password, user.password);
+    if (!checkPassword) {
+      return res.status(401).json({ 
+        msg: "Senha inválida", 
+        code: "INVALID_PASSWORD" 
+      });
+    }
 
-  // Gerar token
-  const token = generateToken(user);
+    // Gerar token
+    const token = generateToken(user);
 
-  res.status(200).json({ msg: "Login realizado com sucesso", token });
+    return res.status(200).json({ 
+      msg: "Login realizado com sucesso", 
+      token 
+    });
+  } catch (error) {
+    console.error("Erro ao tentar logar:", error);
+    return res.status(500).json({ 
+      msg: "Erro no servidor, tente novamente mais tarde" 
+    });
+  }
 };
